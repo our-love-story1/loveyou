@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="mn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Болзоонд урих хуудас ❤️</title>
+
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+:root {
+    --pink: #ff4f81;
+    --pink-dark: #e83f72;
+    --rose: #fff2f6;
+    --text: #34313a;
+    --muted: #6f6772;
+    --card: rgba(255, 255, 255, 0.94);
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background:
+        radial-gradient(circle at 18% 15%, #fff8c7 0 12%, transparent 28%),
+        radial-gradient(circle at 85% 20%, #c7f2ff 0 10%, transparent 25%),
+        linear-gradient(135deg, #ffd1dc, #fff3f7 52%, #ffe3b3);
+    font-family: "Segoe UI", "Noto Sans", "DejaVu Sans", Arial, sans-serif;
+    color: var(--text);
+    overflow: hidden;
+    padding: 18px;
+}
+
+.card {
+    width: min(92vw, 440px);
+    max-height: calc(100vh - 36px);
+    overflow-y: auto;
+    background: var(--card);
+    padding: 28px;
+    border-radius: 22px;
+    text-align: center;
+    box-shadow: 0 18px 45px rgba(64, 38, 49, 0.18);
+    position: relative;
+    z-index: 10;
+}
+
+.badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 7px 12px;
+    border-radius: 999px;
+    background: #fff2b8;
+    color: #7c4a00;
+    font-size: 13px;
+    font-weight: 700;
+    margin-bottom: 12px;
+}
+
+h1 {
+    color: var(--pink);
+    font-size: 34px;
+    line-height: 1.12;
+    margin: 0 0 10px;
+}
+
+h2 {
+    color: var(--text);
+    font-size: 20px;
+    line-height: 1.35;
+    margin: 10px 0 18px;
+}
+
+p {
+    color: var(--muted);
+    line-height: 1.55;
+}
+
+.gif-frame {
+    width: min(310px, 78vw);
+    aspect-ratio: 1 / 1;
+    margin: 12px auto 18px;
+    display: grid;
+    place-items: center;
+    border-radius: 24px;
+    background: #fff7fb;
+    overflow: hidden;
+    box-shadow: 0 12px 24px rgba(255, 79, 129, 0.12);
+}
+
+#catGif {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.options {
+    display: grid;
+    gap: 10px;
+    margin-top: 14px;
+}
+
+.option {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: var(--rose);
+    padding: 13px 14px;
+    border: 2px solid transparent;
+    border-radius: 14px;
+    text-align: left;
+    cursor: pointer;
+}
+
+.option input {
+    width: 18px;
+    height: 18px;
+    accent-color: var(--pink);
+}
+
+.option span {
+    display: block;
+    font-size: 16px;
+    font-weight: 700;
+}
+
+.option small {
+    display: block;
+    color: var(--muted);
+    margin-top: 2px;
+}
+
+.option:has(input:checked) {
+    border-color: var(--pink);
+    background: #ffe4ed;
+}
+
+.buttons {
+    display: flex;
+    justify-content: center;
+    gap: 14px;
+    margin-top: 22px;
+    flex-wrap: wrap;
+}
+
+button {
+    min-width: 128px;
+    border: 0;
+    background: var(--pink);
+    color: white;
+    padding: 14px 20px;
+    border-radius: 999px;
+    cursor: pointer;
+    font-size: 17px;
+    font-weight: 700;
+    box-shadow: 0 10px 18px rgba(255, 79, 129, 0.25);
+}
+
+#noBtn {
+    background: #85808a;
+    min-width: 150px;
+    max-width: min(86vw, 260px);
+    white-space: normal;
+    line-height: 1.25;
+}
+
+#yesBtn.grow,
+#chooseBtn.grow {
+    transform: scale(1.12);
+}
+
+#noMessage {
+    min-height: 28px;
+    margin: 14px 0 0;
+    color: var(--pink-dark);
+    font-weight: 700;
+}
+
+#dateStep,
+#success {
+    display: none;
+}
+
+#countdown {
+    display: inline-block;
+    color: var(--pink-dark);
+    background: #fff0b8;
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 1.35;
+    margin-top: 14px;
+    padding: 12px 14px;
+    border-radius: 14px;
+}
+
+.heart {
+    position: fixed;
+    top: -50px;
+    pointer-events: none;
+    animation: fall 6s linear forwards;
+    z-index: 1;
+}
+
+@keyframes fall {
+    to {
+        transform: translateY(120vh) rotate(180deg);
+        opacity: 0.15;
+    }
+}
+
+@media (max-width: 500px) {
+    body {
+        align-items: flex-start;
+    }
+
+    .card {
+        padding: 22px;
+        margin-top: 12px;
+    }
+
+    h1 {
+        font-size: 29px;
+    }
+
+    h2 {
+        font-size: 18px;
+    }
+
+    button {
+        width: 100%;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<main class="card" id="mainCard">
+    <div id="askStep">
+        <div class="badge">💌 Чамаас асуух нэг юм байна</div>
+
+        <h1>Хээе хөөрхөнөө ❤️</h1>
+
+        <div class="gif-frame">
+            <img id="catGif" src="date-cute.gif" alt="Хөөрхөн хөдөлгөөнт зураг">
+        </div>
+
+        <h2>Чамайг болзоонд урьж байна</h2>
+        <p>Хариултаа үнэнээсээ өгөөрэй. Гэхдээ “тийм” гэвэл би бүр их баярлана.</p>
+
+        <p id="noMessage"></p>
+
+        <div class="buttons">
+            <button id="noBtn" type="button">Үгүй 🥺</button>
+            <button id="yesBtn" type="button" onclick="showDateChoices()">Тийм ❤️</button>
+        </div>
+    </div>
+
+    <div id="dateStep">
+        <div class="badge">💕 Тэгвэл өдрөө сонгоё</div>
+
+        <h1>Ямар өдөр тохирох вэ?</h1>
+        <p>Доороос боломжтой өдрөө сонгоорой.</p>
+
+        <section class="options">
+            <label class="option">
+                <input type="radio" name="date" value="2026-07-08T18:30:00+08:00" data-label="7 сарын 8, Лхагва - 18:30">
+                <span>7 сарын 8, Лхагва - 18:30<small>Долоо хоногийн дунд жижиг баяр</small></span>
+            </label>
+
+            <label class="option">
+                <input type="radio" name="date" value="2026-07-09T19:00:00+08:00" data-label="7 сарын 9, Пүрэв - 19:00">
+                <span>7 сарын 9, Пүрэв - 19:00<small>Оройн тайван уулзалт</small></span>
+            </label>
+
+            <label class="option">
+                <input type="radio" name="date" value="2026-07-10T19:00:00+08:00" data-label="7 сарын 10, Баасан - 19:00">
+                <span>7 сарын 10, Баасан - 19:00<small>Баасан гарагийн болзоо</small></span>
+            </label>
+
+            <label class="option">
+                <input type="radio" name="date" value="2026-07-12T17:00:00+08:00" data-label="7 сарын 12, Ням - 17:00">
+                <span>7 сарын 12, Ням - 17:00<small>Амралтын өдрийн гоё цаг</small></span>
+            </label>
+
+            <label class="option">
+                <input type="radio" name="date" value="2026-07-13T20:00:00+08:00" data-label="7 сарын 13, Даваа - 20:00">
+                <span>7 сарын 13, Даваа - 20:00<small>Оройн зөөлөн уур амьсгал</small></span>
+            </label>
+        </section>
+
+        <div class="buttons">
+            <button id="chooseBtn" type="button" onclick="confirmDate()">Сонголоо ❤️</button>
+        </div>
+    </div>
+</main>
+
+<section class="card" id="success">
+    <div class="badge">🎉 Болзоо баталгаажлаа</div>
+    <h1>Баярлалаа ❤️</h1>
+    <p id="selectedDate"></p>
+    <p>Чамтай уулзах өдөр хүртэл:</p>
+    <div id="countdown"></div>
+</section>
+
+<script>
+const noBtn = document.getElementById("noBtn");
+const yesBtn = document.getElementById("yesBtn");
+const noMessage = document.getElementById("noMessage");
+
+let noAttempts = 0;
+let countdownTimer = null;
+let heartsTimer = null;
+
+function showDateChoices() {
+    document.getElementById("askStep").style.display = "none";
+    document.getElementById("dateStep").style.display = "block";
+    createHearts();
+
+    if (typeof confetti === "function") {
+        confetti({
+            particleCount: 120,
+            spread: 120,
+            origin: { y: 0.65 }
+        });
+    }
+}
+
+function teaseNoButton(event) {
+    if (event) {
+        event.preventDefault();
+    }
+
+    noAttempts += 1;
+
+    const buttonMessages = [
+        "Үгүй ээ? 🥺",
+        "Дахиад бод доо ❤️",
+        "Ганцхан болзоо 😄",
+        "Гоё болзоо болно ❤️",
+        "Тийм гэвэл гоё 💕",
+        "Битгий зугтаач 😅",
+        "Намайг авар 🙈",
+        "Хүлээж байна 🎉",
+        "Хөөрхөн боломж ❤️",
+        "Би хүлээж байна 😌"
+    ];
+
+    const longerMessages = [
+        "Жаахан бодоод үз дээ 🥺",
+        "Би гоё газар аваачна шүү ❤️",
+        "Ганцхан хөөрхөн болзоо гэж бодъё 😄",
+        "Чамтай болзоонд явах мөрөөдөлтэй хүн байна ❤️",
+        "За тэгвэл илүү хөөрхөн асууя: тийм үү? 💕",
+        "Үгүй товч ядарлаа, тийм товчоо аваръя 😅",
+        "Намайг ингэж битгий сандарга л даа 🙈",
+        "Тийм гэж дарвал confetti хүртэл баярлана 🎉",
+        "Сүүлийн боломж биш ээ, гэхдээ хамгийн хөөрхөн боломж ❤️",
+        "За би хүлээж байна... тэвчээртэйгээр 😌"
+    ];
+
+    const index = (noAttempts - 1) % buttonMessages.length;
+
+    noBtn.textContent = buttonMessages[index];
+    noMessage.textContent = longerMessages[index];
+
+    yesBtn.classList.add("grow");
+    setTimeout(() => yesBtn.classList.remove("grow"), 240);
+
+    const margin = 16;
+    const maxX = Math.max(margin, window.innerWidth - noBtn.offsetWidth - margin);
+    const maxY = Math.max(margin, window.innerHeight - noBtn.offsetHeight - margin);
+
+    noBtn.style.position = "fixed";
+    noBtn.style.left = Math.floor(Math.random() * maxX) + "px";
+    noBtn.style.top = Math.floor(Math.random() * maxY) + "px";
+}
+
+noBtn.addEventListener("mouseover", teaseNoButton);
+noBtn.addEventListener("click", teaseNoButton);
+noBtn.addEventListener("touchstart", teaseNoButton);
+
+function confirmDate() {
+    const selected = document.querySelector('input[name="date"]:checked');
+
+    if (!selected) {
+        alert("Эхлээд нэг өдрөө сонгоорой ❤️");
+        return;
+    }
+
+    const dateLabel = selected.dataset.label;
+    const dateValue = selected.value;
+
+    document.getElementById("mainCard").style.display = "none";
+    document.getElementById("success").style.display = "block";
+    document.getElementById("selectedDate").innerHTML = "📅 Бидний болзоо:<br><b>" + dateLabel + "</b>";
+
+    if (typeof confetti === "function") {
+        confetti({
+            particleCount: 300,
+            spread: 180,
+            origin: { y: 0.6 }
+        });
+    }
+
+    createHearts();
+    startCountdown(new Date(dateValue));
+}
+
+function startCountdown(date) {
+    if (countdownTimer) {
+        clearInterval(countdownTimer);
+    }
+
+    function updateCountdown() {
+        const now = new Date().getTime();
+        const distance = date.getTime() - now;
+        const countdown = document.getElementById("countdown");
+
+        if (distance <= 0) {
+            countdown.innerHTML = "❤️ Болзооны цаг боллоо! ❤️";
+            clearInterval(countdownTimer);
+            return;
+        }
+
+        const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+        countdown.innerHTML = "⏳ " + days + " өдөр " + hours + " цаг " + minutes + " мин " + seconds + " сек";
+    }
+
+    updateCountdown();
+    countdownTimer = setInterval(updateCountdown, 1000);
+}
+
+function createHearts() {
+    if (heartsTimer) {
+        return;
+    }
+
+    heartsTimer = setInterval(function() {
+        const heart = document.createElement("div");
+
+        heart.className = "heart";
+        heart.innerHTML = "❤️";
+        heart.style.left = Math.random() * 100 + "vw";
+        heart.style.fontSize = 20 + Math.random() * 24 + "px";
+
+        document.body.appendChild(heart);
+
+        setTimeout(() => {
+            heart.remove();
+        }, 6000);
+    }, 260);
+}
+</script>
+
+</body>
+</html>
